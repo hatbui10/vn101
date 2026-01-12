@@ -309,7 +309,12 @@
         }
 
         function lfsrTransform(bits) {
-            // LFSR with polynomial x^5 + x^2 + 1
+            // LFSR with polynomial x^5 + x^2 + 1 - nhưng nếu là 00000 thì đặc biệt
+            if (bits === '00000') {
+                const randomIndex = Math.floor(Math.random() * xorPatterns.length);
+                const pattern = xorPatterns[randomIndex];
+                return pattern + ` (đặc biệt)`;
+            }
             let result = bits;
             for (let i = 0; i < 5; i++) {
                 const feedback = (result[4] === result[1]) ? '0' : '1';
@@ -319,14 +324,24 @@
         }
 
         function mirrorXor(bits) {
-            // Đảo ngược dãy bit và XOR với dãy gốc
+            // Đảo ngược dãy bit và XOR với dãy gốc - nhưng nếu là 00000 thì đặc biệt
+            if (bits === '00000') {
+                const randomIndex = Math.floor(Math.random() * xorPatterns.length);
+                const pattern = xorPatterns[randomIndex];
+                return pattern + ` (đặc biệt)`;
+            }
             const reversed = bits.split('').reverse().join('');
             const result = bits.split('').map((bit, i) => bit === reversed[i] ? '0' : '1').join('');
             return result;
         }
 
         function caesarBit(bits) {
-            // Dịch bit sang trái theo giá trị thập phân của dãy bit
+            // Dịch bit sang trái theo giá trị thập phân của dãy bit - nhưng nếu là 00000 hoặc 11111 thì đặc biệt
+            if (bits === '00000' || bits === '11111') {
+                const randomIndex = Math.floor(Math.random() * xorPatterns.length);
+                const pattern = xorPatterns[randomIndex];
+                return pattern + ` (đặc biệt)`;
+            }
             const decimal = bitsToDecimal(bits);
             const shift = decimal % 5;
             const result = bits.substring(shift) + bits.substring(0, shift);
@@ -334,7 +349,12 @@
         }
 
         function parityXor(bits) {
-            // Tính bit chẵn lẻ và XOR với từng bit
+            // Tính bit chẵn lẻ và XOR với từng bit - nhưng nếu là 00000 hoặc 11111 thì đặc biệt
+            if (bits === '00000' || bits === '11111') {
+                const randomIndex = Math.floor(Math.random() * xorPatterns.length);
+                const pattern = xorPatterns[randomIndex];
+                return pattern + ` (đặc biệt)`;
+            }
             const ones = bits.split('').filter(bit => bit === '1').length;
             const parityBit = (ones % 2).toString();
             const result = bits.split('').map(bit => bit === parityBit ? '0' : '1').join('');
@@ -342,22 +362,42 @@
         }
 
         function rotateRight(bits) {
-            // Xoay phải 1 bit
+            // Xoay phải 1 bit - nhưng nếu là 00000 hoặc 11111 thì đặc biệt
+            if (bits === '00000' || bits === '11111') {
+                const randomIndex = Math.floor(Math.random() * xorPatterns.length);
+                const pattern = xorPatterns[randomIndex];
+                return pattern + ` (đặc biệt)`;
+            }
             return bits[4] + bits.substring(0, 4);
         }
 
         function shiftLeft(bits) {
-            // Dịch trái, thêm 0 ở cuối
+            // Dịch trái, thêm 0 ở cuối - nhưng nếu là 00000 thì tạo ngẫu nhiên
+            if (bits === '00000') {
+                const randomIndex = Math.floor(Math.random() * xorPatterns.length);
+                const pattern = xorPatterns[randomIndex];
+                return pattern + ` (đặc biệt)`;
+            }
             return bits.substring(1) + '0';
         }
 
         function shiftRight(bits) {
-            // Dịch phải, thêm 0 ở đầu
+            // Dịch phải, thêm 0 ở đầu - nhưng nếu là 00000 thì tạo ngẫu nhiên
+            if (bits === '00000') {
+                const randomIndex = Math.floor(Math.random() * xorPatterns.length);
+                const pattern = xorPatterns[randomIndex];
+                return pattern + ` (đặc biệt)`;
+            }
             return '0' + bits.substring(0, 4);
         }
 
         function andWithPattern(bits) {
-            // AND với mẫu ngẫu nhiên
+            // AND với mẫu ngẫu nhiên - nhưng nếu là 00000 thì áp dụng quy tắc đặc biệt
+            if (bits === '00000') {
+                const randomIndex = Math.floor(Math.random() * xorPatterns.length);
+                const pattern = xorPatterns[randomIndex];
+                return pattern + ` (đặc biệt)`;
+            }
             const randomIndex = Math.floor(Math.random() * logicPatterns.length);
             const pattern = logicPatterns[randomIndex];
             const result = bits.split('').map((bit, i) => bit === '1' && pattern[i] === '1' ? '1' : '0').join('');
@@ -365,7 +405,12 @@
         }
 
         function orWithPattern(bits) {
-            // OR với mẫu ngẫu nhiên
+            // OR với mẫu ngẫu nhiên - nhưng nếu là 11111 thì đặc biệt
+            if (bits === '11111') {
+                const randomIndex = Math.floor(Math.random() * xorPatterns.length);
+                const pattern = xorPatterns[randomIndex];
+                return pattern + ` (đặc biệt)`;
+            }
             const randomIndex = Math.floor(Math.random() * logicPatterns.length);
             const pattern = logicPatterns[randomIndex];
             const result = bits.split('').map((bit, i) => bit === '1' || pattern[i] === '1' ? '1' : '0').join('');
@@ -380,14 +425,24 @@
         }
 
         function multiplyMod32(bits) {
-            // Nhân 3 mod 32
+            // Nhân 3 mod 32 - nhưng nếu là 00000 thì đặc biệt
+            if (bits === '00000') {
+                const randomIndex = Math.floor(Math.random() * xorPatterns.length);
+                const pattern = xorPatterns[randomIndex];
+                return pattern + ` (đặc biệt)`;
+            }
             const decimal = bitsToDecimal(bits);
             const result = (decimal * 3) % 32;
             return decimalToBits(result) + ` (x3)`;
         }
 
         function bitSwap(bits) {
-            // Hoán đổi bit 0<->4 và 1<->3
+            // Hoán đổi bit 0<->4 và 1<->3 - nhưng nếu là 00000 hoặc 11111 thì đặc biệt
+            if (bits === '00000' || bits === '11111') {
+                const randomIndex = Math.floor(Math.random() * xorPatterns.length);
+                const pattern = xorPatterns[randomIndex];
+                return pattern + ` (đặc biệt)`;
+            }
             const swapped = [
                 bits[4], bits[3], bits[2], bits[1], bits[0]
             ];
@@ -395,14 +450,24 @@
         }
 
         function toGrayCode(bits) {
-            // Chuyển sang Gray Code
+            // Chuyển sang Gray Code - nhưng nếu là 00000 thì đặc biệt
+            if (bits === '00000') {
+                const randomIndex = Math.floor(Math.random() * xorPatterns.length);
+                const pattern = xorPatterns[randomIndex];
+                return pattern + ` (đặc biệt)`;
+            }
             const decimal = bitsToDecimal(bits);
             const gray = decimal ^ (decimal >> 1);
             return decimalToBits(gray);
         }
 
         function twosComplement(bits) {
-            // Bù 2 của số
+            // Bù 2 của số - nhưng nếu là 00000 hoặc 11111 thì đặc biệt
+            if (bits === '00000' || bits === '11111') {
+                const randomIndex = Math.floor(Math.random() * xorPatterns.length);
+                const pattern = xorPatterns[randomIndex];
+                return pattern + ` (đặc biệt)`;
+            }
             const decimal = bitsToDecimal(bits);
             const complement = (~decimal + 1) & 0x1F; // Giới hạn 5 bit
             return decimalToBits(complement);
@@ -427,14 +492,24 @@
         }
 
         function randomRotation(bits) {
-            // Xoay ngẫu nhiên 1-4 vị trí
+            // Xoay ngẫu nhiên 1-4 vị trí - nhưng nếu là 00000 hoặc 11111 thì đặc biệt
+            if (bits === '00000' || bits === '11111') {
+                const randomIndex = Math.floor(Math.random() * xorPatterns.length);
+                const pattern = xorPatterns[randomIndex];
+                return pattern + ` (đặc biệt)`;
+            }
             const rotation = Math.floor(Math.random() * 4) + 1;
             const result = bits.substring(rotation) + bits.substring(0, rotation);
             return result + ` (xoay ${rotation})`;
         }
 
         function cellularAutomaton(bits) {
-            // Rule 30 Cellular Automaton
+            // Rule 30 Cellular Automaton - nhưng nếu là 00000 thì đặc biệt
+            if (bits === '00000') {
+                const randomIndex = Math.floor(Math.random() * xorPatterns.length);
+                const pattern = xorPatterns[randomIndex];
+                return pattern + ` (đặc biệt)`;
+            }
             let result = '';
             for (let i = 0; i < 5; i++) {
                 const left = bits[(i - 1 + 5) % 5];
@@ -453,7 +528,12 @@
         }
 
         function checksum(bits) {
-            // Tổng kiểm tra 5 bit
+            // Tổng kiểm tra 5 bit - nhưng nếu là 00000 thì tạo ngẫu nhiên
+            if (bits === '00000') {
+                const randomIndex = Math.floor(Math.random() * xorPatterns.length);
+                const pattern = xorPatterns[randomIndex];
+                return pattern + ` (đặc biệt)`;
+            }
             const decimal = bitsToDecimal(bits);
             const sum = decimal.toString(2).padStart(5, '0').slice(-5);
             return sum;
