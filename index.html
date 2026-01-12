@@ -656,8 +656,8 @@
                 if (input.classList.contains('valid')) validCount++;
             });
             
-            // If we have at least 20 complete sequences, auto analyze
-            if (validCount >= 20 && validCount === filledCount) {
+            // Auto analyze khi có đủ 5 dãy trở lên
+            if (validCount >= 5 && validCount === filledCount) {
                 setTimeout(() => {
                     analyzeBitGridData();
                 }, 500);
