@@ -83,12 +83,18 @@
             min-height: 150px;
             transition: all 0.3s ease;
             background: white;
+            line-height: 1.5;
         }
         
         .sequence-input:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .current-line {
+            background: #e3f2fd;
+            border: 2px solid #667eea;
         }
         
         .bit-grid-container {
@@ -392,7 +398,7 @@
                 </div>
                 
                 <div id="textareaMethod" class="method-content">
-                    <textarea id="historicalData" class="sequence-input" placeholder="Nhập các dãy nhị phân 5-bit, mỗi dãy trên một dòng. Ví dụ:&#10;10101&#10;11010&#10;00111&#10;..."></textarea>
+                    <textarea id="historicalData" class="sequence-input" placeholder="Nhập các dãy nhị phân 5-bit, mỗi dãy trên một dòng. Ví dụ:&#10;10101&#10;11010&#10;00111&#10;..." oninput="handleTextareaInput()"></textarea>
                 </div>
                 
                 <div id="bitgridMethod" class="method-content" style="display: none;">
@@ -706,6 +712,25 @@
             return sequences;
         }
 
+        function handleTextareaInput() {
+            const textarea = event.target;
+            const lines = textarea.value.split('\n');
+            const currentLine = textarea.value.substring(0, textarea.selectionStart).split('\n').length;
+            const currentLineText = lines[currentLine - 1] || '';
+            
+            // Check if current line has 5 bits
+            if (currentLineText.length === 5 && /^[01]+$/.test(currentLineText)) {
+                // Auto move to next line
+                setTimeout(() => {
+                    const nextLineStart = textarea.value.indexOf('\n', textarea.selectionStart) + 1;
+                    if (nextLineStart < textarea.value.length) {
+                        textarea.setSelectionRange(nextLineStart, nextLineStart);
+                        textarea.focus();
+                    }
+                }, 100);
+            }
+        }
+
         function validateInput() {
             if (currentMethod === 'bitgrid') {
                 const sequences = getSequencesFromGrid();
@@ -724,14 +749,15 @@
                 errorElement.style.display = 'none';
                 errorElement.textContent = '';
                 
-                // Check sequence count
-                if (lines.length < 5) {
-                    errorElement.textContent = 'Vui lòng nhập ít nhất 5 dãy để phân tích';
-                    errorElement.style.display = 'block';
-                    return false;
+                // Auto analyze when have at least 5 valid sequences
+                const validSequences = lines.filter(line => /^[01]{5}$/.test(line));
+                if (validSequences.length >= 5) {
+                    setTimeout(() => {
+                        analyzeData();
+                    }, 500);
                 }
                 
-                // Validate each sequence
+                // Validate each sequence for error display
                 const sequences = [];
                 for (let i = 0; i < lines.length; i++) {
                     const line = lines[i].trim();
