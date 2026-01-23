@@ -1,403 +1,144 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dãy Nhị Phân</title>
-    <style>
-        /* ===== RESET & BODY ===== */
+<meta charset="UTF-8">
+<title>Dãy nhị phân tự động</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
 body {
-    font-family: Times New Roman, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
     margin: 0;
-    background: linear-gradient(135deg, #5a189a  , #6a0572);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #5a189a, #6a0572);
+    font-family: "Courier New", monospace;
 }
 
-/* ===== CONTAINER ===== */
 .container {
-    text-align: center;
-    background: #8b0000   /* Dark Red */
-;
-    padding: 40px;
+    background: #8b0000;
+    padding: 32px;
     border-radius: 14px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-    max-width: 900px;
+   margin: 10px;
     width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    text-align: center;
 }
 
-/* ===== TITLES ===== */
 h1 {
     color: #fff;
-    margin-bottom: 30px;
-    font-weight: 800;
+    margin-bottom: 20px;
 }
 
-/* ===== MAIN BIT DISPLAY ===== */
 .binary-display {
-    font-size: 80px;
+    font-size: 90px;
     font-weight: 900;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, #fff, #e7f1ff);
+    border-radius: 16px;
+    border: 4px solid #0d6efd;
     color: #0d6efd;
-    margin: 30px 0;
-    min-height: 120px;
-    width: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(circle, #ffffff, #e7f1ff);
-    border-radius: 14px;
-    border: 3px solid #0d6efd;
-    text-shadow: 0 3px 10px rgba(13, 110, 253, 0.4);
-    box-shadow: 0 6px 25px rgba(13, 110, 253, 0.35);
-    
-}
-
-/* ===== BIT ANIMATIONS ===== */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-.binary-display.pop {
-    animation: pop 0.6s ease-out;
-}
-
-@keyframes pop {
-    0% { transform: scale(1); }
-    30% {
-        transform: scale(1.3);
-        box-shadow: 0 10px 40px rgba(13, 110, 253, 0.7);
-    }
-    100% { transform: scale(1); }
-}
-
-/* ===== BUTTONS ===== */
-.start-btn,
-.reset-btn {
-    border: none;
-    padding: 14px 32px;
-    font-size: 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 700;
-    transition: all 0.25s ease;
-}
-
-.start-btn {
-    background: #198754;
-    color: #ffffff;
-}
-
-.start-btn:hover {
-    background: #157347;
-    transform: translateY(-2px);
-}
-
-.reset-btn {
-    background: #ffc107;
-    color: #212529;
-    margin-left: 10px;
-}
-
-.reset-btn:hover {
-    background: #e0a800;
-    transform: translateY(-2px);
-}
-
-.start-btn:disabled,
-.reset-btn:disabled {
-    background: #adb5bd;
-    cursor: not-allowed;
-    transform: none;
-}
-
-/* ===== STATUS TEXT ===== */
-.status {
-    margin-top: 20px;
-    font-size: 16px;
-    color: #495057;
-}
-
-.sequence-info {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #868e96;
-}
-
-/* ===== FULL SEQUENCE DISPLAY ===== */
-.sequence-display {
-    margin-top: 30px;
-    padding: 18px;
-    background: linear-gradient(135deg, #e0a800, #f4a261);
-    border-radius: 12px;
-    border: 2px dashed #adb5bd;
-    font-family: "Courier New", monospace;
-    letter-spacing: 0px;
-    font-size: 20px;
-    word-wrap: break-word;
-}
-
-/* ===== BIT BASE ===== */
-.sequence-bit {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5px;
-    width: 34px;
-    height: 34px;
-
-    font-family: "Courier New", monospace;
-    font-size: 20px;
-    font-weight: 900;
-    line-height: 1;
-
-    border-radius: 6px;
-    box-sizing: border-box;
-}
-
-/* Bit = 1 */
-.sequence-bit.bit-1 {
-    background: #dee2e6;
-    color: #343a40;
-    border: 1px solid #ced4da;}
-
-/* Bit = 0 */
-.sequence-bit.bit-0 {
-    background: #dee2e6;
-    color: #343a40;
-    border: 1px solid #ced4da;
-}
-
-/* ===== CURRENT BIT ===== */
-.current-bit {
-    background: #dc3545 !important;
-    color: #ffffff !important;
-    transform: scale(1.15);
-    box-shadow: 0 4px 14px rgba(220, 53, 69, 0.7);
-    z-index: 2;
-}
-
-/* Non-current bits fade */
-.sequence-bit:not(.current-bit) {
-    opacity: 0.55;
-}
-
-/* ===== HOURGLASS ===== */
-.hourglass-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    margin-top: 30px;
-}
-
-.hourglass {
-    width: 50px;
-    height: 75px;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.6s ease-in-out;
-}
-
-.hourglass.flipping {
-    transform: rotateX(180deg);
-}
-
-.hourglass-top,
-.hourglass-bottom {
-    width: 50px;
-    height: 32px;
-    position: absolute;
-    border: 2px solid #212529;
-    background: rgba(255, 255, 255, 0.95);
-}
-
-.hourglass-top {
-    top: 0;
-    clip-path: polygon(0 0, 100% 0, 85% 100%, 15% 100%);
-}
-
-.hourglass-bottom {
-    bottom: 0;
-    clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%);
-}
-
-.hourglass-middle {
-    width: 12px;
-    height: 12px;
-    background: #212529;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-}
-
-/* ===== SAND ===== */
-.sand {
-    position: absolute;
-    background: linear-gradient(45deg, #f4a460, #daa520);
-    transition: all 30s linear;
-    border-radius: 3px;
-}
-
-.sand-top {
-    width: 44px;
-    height: 26px;
-    top: 3px;
-    left: 3px;
-    clip-path: polygon(0 0, 100% 0, 85% 100%, 15% 100%);
-}
-
-.sand-bottom {
-    width: 44px;
-    height: 0;
-    bottom: 3px;
-    left: 3px;
-    clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%);
-}
-
-.sand-top.flowing {
-    height: 0;
-}
-
-.sand-bottom.flowing {
-    height: 26px;
-}
-
-/* ===== COUNTDOWN ===== */
-.countdown {
-    font-size: 20px;
-    font-weight: 900;
-    color: #dc3545;
-    font-family: "Courier New", monospace;
-    min-width: 36px;
-    text-align: center;
 }
 
 .binary-display.tick {
-    animation: mainBitTick 0.9s ease-in-out;
+    animation: tick .6s ease;
 }
 
-@keyframes mainBitTick {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 6px 25px rgba(13, 110, 253, 0.35);
-    }
-    50% {
-        transform: scale(1.12);
-        box-shadow: 0 10px 40px rgba(220, 53, 69, 0.6);
-    }
-    100% {
-        transform: scale(1);
-        box-shadow: 0 6px 25px rgba(13, 110, 253, 0.35);
-    }
+@keyframes tick {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
 }
 
-    </style>
+.controls {
+    margin-top: 15px;
+}
+
+button {
+    padding: 12px 26px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+#startBtn {
+    background: #198754;
+    color: #fff;
+}
+
+#resetBtn {
+    background: #ffc107;
+    margin-left: 10px;
+}
+
+.status {
+    margin-top: 15px;
+    color: #f8f9fa;
+}
+
+.sequence-display {
+    margin-top: 25px;
+    padding: 14px;
+    background: #fff;
+    border-radius: 10px;
+
+    display: grid;
+    grid-template-columns: repeat(60, 26px);
+    gap: 4px;
+
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.sequence-bit {
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    margin: 2px;
+    line-height: 26px;
+    text-align: center;
+    font-weight: 900;
+    border-radius: 5px;
+    background: #dee2e6;
+    color: #212529;
+    opacity: .5;
+}
+
+.sequence-bit.current {
+    background: #dc3545;
+    color: #fff;
+    opacity: 1;
+    transform: scale(1.15);
+}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Dãy Nhị Phân Tự Động</h1>
-        
-        <div style="display: flex; align-items: center; justify-content: center; gap: 40px; margin-top: 20px;">
-            <div style="text-align: center;">
-                <div class="binary-display" id="binaryDisplay">
-                    ...
-                </div>
-            </div>
-            
-            <div style="text-align: center;">
-                <div class="hourglass-container">
-                    <div class="hourglass" id="hourglass">
-                        <div class="hourglass-top" id="hourglassTop">
-                            <div class="sand" id="sandTop"></div>
-                        </div>
-                        <div class="hourglass-middle"></div>
-                        <div class="hourglass-bottom" id="hourglassBottom">
-                            <div class="sand" id="sandBottom"></div>
-                        </div>
-                    </div>
-                    <div class="countdown" id="countdown">30</div>
-                </div>
-            </div>
-        </div>
-        
-        <div style="margin-top: 20px;">
-            <button class="start-btn" id="startBtn" onclick="toggleSequence()">
-                Bắt đầu
-            </button>
-            
-            <button class="reset-btn" id="resetBtn" onclick="resetSequence()" style="margin-left: 10px;">
-                Reset
-            </button>
-        </div>
-        
-        <div class="status" id="status">
-            Buihat10 Banhung2011dangmanh@
-        </div>
-        
-        <div class="sequence-info" id="sequenceInfo">
-            buivn10 BAnhung2019,./
-        </div>
-         <div class="sequence-info" id="sequenceInfo">
-            hatbuivn09 Banhung2011,./Banhung2011,./
-        </div>
-         <div class="sequence-info" id="sequenceInfo">
-           minhchau minhchau10Banhung2011dangmanh@
-        </div>
-         <div class="sequence-info" id="sequenceInfo">
-          https://cryptor.plus/?pages=games
-        </div>
-        <div class="sequence-info" id="sequenceInfo">
-         956842523 qazwsxedc123 987664320 B123542011B
-        </div>
+<div class="container">
+    <h1>Dãy nhị phân tự động</h1>
 
-         <div class="sequence-info" id="sequenceInfo">
-          Thulinh sdf234cvbthulink
-        </div>
+    <div class="binary-display" id="binaryDisplay">-</div>
 
-        
-         <div class="sequence-info" id="sequenceInfo">
-         Thulien dfgyhuliencv
-        </div>
-        
-         <div class="sequence-info" id="sequenceInfo">
-         Minhchau27 qazwsxedc1234,.
-        </div>
-        
-         <div class="sequence-info" id="sequenceInfo">
-         Minhchau minhchau10Banhung2011dangmanh@
-        </div>
-        
-         <div class="sequence-info" id="sequenceInfo">
-         Vudung dungvbhgfvu,.187
-        </div>
-        
-         <div class="sequence-info" id="sequenceInfo">
-         Bichchau 543bichchau,@
-        </div>
-        
-         <div class="sequence-info" id="sequenceInfo">
-         Minhnhi munhnhicdf543,&₫
-        </div>
-        
-         <div class="sequence-info" id="sequenceInfo">
-         Luuly32 luulyfgd43,.gfd@
-        </div>
+    <div class="controls">
+        <button id="startBtn">Bắt đầu</button>
+        <button id="resetBtn">Reset</button>
+    </div>
 
-        
-         <div class="sequence-info" id="sequenceInfo">
-         Longchau43 longchaux345cv,.@
-        </div>
-        
-        
-        <div class="sequence-display" id="sequenceDisplay">
-            00010001010001000011011101010110100110000000101101000000000011110110101001100000111100110011110110111000000001100100101110101011001000010010100110010011101011101000011100001100100110111011010001111100001001101100010001101010101010000000010111110010010110001000010100100010010111001001010101000110111110001010110100101000101101000100101101101000110101011110001000010011100101101011011001001110111111101110011110101010000000001000100101001100010110110000110111101000001000001110111110110011011010000111
+    <div class="status" id="status">
+        Sẵn sàng
+    </div>
+
+    <div class="sequence-display" id="sequenceDisplay">
+        <!-- Chuỗi nhị phân đặt tại đây -->
+00010001010001000011011101010110100110000000101101000000000011110110101001100000111100110011110110111000000001100100101110101011001000010010100110010011101011101000011100001100100110111011010001111100001001101100010001101010101010000000010111110010010110001000010100100010010111001001010101000110111110001010110100101000101101000100101101101000110101011110001000010011100101101011011001001110111111101110011110101010000000001000100101001100010110110000110111101000001000001110111110110011011010000111
 01010111111111011001001010100011111010111000100100010111100100000111000100001100000110111110011011110100000110010111010001111011001010000100010001011100101111010011011101110111110011010010011110110001001110111101110011001001101011000111101110110001101000110111100011100110001000000111111000111001101111100011001000001011001011010011111110011111111010111111100111010000000010011001111000000101100001110101011000001010110000111001011001010110011011110100011001000010011111101101001000111010000010101110
 11111111011000111111000001000100001110100011001100001001001100111001100011000001111110000110111000110010010000010101010000110000101010110111100110000100100111000001110001001101010000101111100100101110010100100000111011111011110110010000000100100101101100010100110101011010110010101010010111111111010111000000110110111001101010011111001101100001001100100100111100100010111010011100011100000111110111011011111110101000110101001100101010100001001010101000000101100011111000111110010010000111000100011001
 10001110100010010110010000110100001001111100111011001001111101011111101011010111011111111011011101100001101011101011100010011011001100000001100011101110101100011111001010001000111001100011101110101101110110100011110111001000000111011011001111100001111000010101000110001110101001011100000011011000011011111100000110110001011001011101010011111110101111101000110110101010101010111011100110000010011111001100011000101100010100110010111001110101111000100100111000111000111111111001101011000111101101110000
@@ -436,193 +177,80 @@ h1 {
 00011110110100101111011100110000110111110111011101001111111001111110011101011101111000000101101111000101111100000111010011000101110001011100100010101101100100100101000111100110100010110111011101001000011000011011101011100111100000000101010111010101010010100011101010100111101111100111001010100101000011100100011111010011001101000110111011100010101100110110100101010010011100100101011011001110000110101000111010011111010100001010000000001000111111101100001101110110001101101000100000100101001111011010
 00010100011010110101101000000010111010001110111010101100101111010010010101101001001100110111000001111100000000010001110011011011100011100001110111110010000110111001010101111111000001011111001010111010000110101101001111111011100010000100100110111110010101000111011000001110001100010110110001110000100101100100111001000011011100111101011010101110100101111101111111100010111011111011111011100011101010001100100000011110101001011100101000101100101110011011100100101000110001011101101010110001001111101010
 00001000110111100111000011101001011100111100111110101011101011010011001111111110110000000110111101010001011010100100100000110100100101100001111001000110101111011000001101000010001111111000010101101000010101001110011111001100010110001101011001101011000110001000000011101111011111110000100001010011111100001101101111100000110100000001010001110110010000101001111000101110010000000110001101101010000110010111111111101001000111011001011111001111100001000100010101011010110110011110011001100110010010011000
-1110110100110011111111111101101001101110000001010011111011001111011100110011100111101100101101111000100001110111011011011111111111100000101100111010111111100001101110110001010011000000100101001000111011101000010011111110110001011011010101101001011010010001011001010110011100100011000010111111111001010101101110010110000100110110100101110001011100100010001000001001111101101001110001110111011011101000111101101111011011110001011110100001110011111111110111101010100001010101010101100100001110
-        </div>
-    </div>
+1110110100110011111111111101101001101110000001010011111011001111011100110011100111101100101101111000100001110111011011011111111111100000101100111010111111100001101110110001010011000000100101001000111011101000010011111110110001011011010101101001011010010001011001010110011100100011000010111111111001010101101110010110000100110110100101110001011100100010001000001001111101101001110001110111011011101000111101101111011011110001011110100001110011111111110111101010100001010101010101100100001110    </div>
+</div>
 
-    <script>
-        // Dãy nhị phân cho trước
-        const binarySequence = ["0", "1", "0", "0", "1", "1", "0", "0", "0", "1", "0", "1", "1", "0", "1", "0", "1", "1", "0", "0", "1", "1", "1", "0", "1", "0", "0", "1"];
-        
-        let currentIndex = 0;
-       
-        let isRunning = false;
-        let countdownInterval = null;
-        let timeLeft = 30;
-        
-        const startBtn = document.getElementById('startBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const binaryDisplay = document.getElementById('binaryDisplay');
-        const status = document.getElementById('status');
-        const sequenceInfo = document.getElementById('sequenceInfo');
-        const sequenceDisplay = document.getElementById('sequenceDisplay');
-        const hourglass = document.getElementById('hourglass');
-        const sandTop = document.getElementById('sandTop');
-        const sandBottom = document.getElementById('sandBottom');
-        const countdown = document.getElementById('countdown');
-        
-        function toggleSequence() {
-            if (isRunning) {
-                stopSequence();
-            } else {
-                startSequence();
-            }
-        }
-        
-        function startSequence() {
-    isRunning = true;
-    startBtn.textContent = "Dừng";
-    startBtn.style.backgroundColor = "#dc3545";
-   
-   
-    updateSequenceInfo();
-    displayCurrentBinary();
-    startHourglass();
-    tickMainBit();
+<script>
+/* ===== LẤY CHUỖI NHỊ PHÂN TỪ HTML ===== */
+let binarySequence = document
+    .getElementById("sequenceDisplay")
+    .textContent
+    .replace(/\s+/g, "")
+    .split("");
 
+const binaryDisplay = document.getElementById("binaryDisplay");
+const sequenceDisplay = document.getElementById("sequenceDisplay");
+const status = document.getElementById("status");
+const startBtn = document.getElementById("startBtn");
+const resetBtn = document.getElementById("resetBtn");
 
-    status.textContent = "Đang chạy... Số tiếp theo sẽ hiển thị sau 30 giây";
-      
+let index = 0;
+let timer = null;
+let intervalSeconds = 30;
 
-}
-        
-        function stopSequence() {
-            isRunning = false;
-            startBtn.textContent = "Bắt đầu";
-            startBtn.style.backgroundColor = "#28a745";
-            
-           
-            if (countdownInterval) {
-                clearInterval(countdownInterval);
-                countdownInterval = null;
-            }
-            
-            status.textContent = "Đã dừng. Nhấn nút để bắt đầu lại";
-        }
-        
-        function displayCurrentBinary() {
-            const currentBinary = binarySequence[currentIndex];
-            binaryDisplay.textContent = currentBinary;
-            
-            // Thêm hiệu ứng pop nổ bật lên khi thay đổi
-            binaryDisplay.classList.remove('pop');
-            void binaryDisplay.offsetWidth; // Trigger reflow
-            binaryDisplay.classList.add('pop');
-            
-            updateSequenceDisplay();
-            updateSequenceInfo();
-        }
-        
-        
-        function tickMainBit() {
-    binaryDisplay.classList.remove('tick');
-    void binaryDisplay.offsetWidth; // ép reflow
-    binaryDisplay.classList.add('tick');
-}
-
-        
-        function updateSequenceDisplay() {
-    let displayHTML = '';
-    binarySequence.forEach((bit, index) => {
-        let className = 'sequence-bit';
-        className += bit === "1" ? ' bit-1' : ' bit-0';
-        if (index === currentIndex) className += ' current-bit';
-        displayHTML += `<span class="${className}" data-index="${index}">${bit}</span>`;
+/* ===== RENDER DÃY ===== */
+function renderSequence() {
+    let html = "";
+    binarySequence.forEach((bit, i) => {
+        html += `<span class="sequence-bit ${i === index ? "current" : ""}">${bit}</span>`;
     });
-    sequenceDisplay.innerHTML = displayHTML;
+    sequenceDisplay.innerHTML = html;
 }
 
-
-
-        function resetSequence() {
-            // Dừng chuỗi nếu đang chạy
-            if (isRunning) {
-                stopSequence();
-            }
-            
-            // Reset về vị trí đầu tiên
-            currentIndex = 0;
-            timeLeft = 30;
-            binaryDisplay.textContent = "--";
-            status.textContent = "Đã reset. Nhấn nút để bắt đầu lại";
-            sequenceInfo.textContent = `Dãy: ${binarySequence.join(' ')} | Tổng số bit: ${binarySequence.length}`;
-            sequenceDisplay.innerHTML = '';
-            countdown.textContent = '30';
-            
-            // Reset đồng hồ cát
-            resetHourglassVisual();
-        }
-      
-      
-      
-      function startHourglass() {
-    if (countdownInterval) clearInterval(countdownInterval);
-
-    timeLeft = 30;
-    countdown.textContent = timeLeft;
-
-    sandTop.classList.add('flowing');
-    sandBottom.classList.add('flowing');
-
-    countdownInterval = setInterval(() => {
-        timeLeft--;
-        countdown.textContent = timeLeft;
-
-        // 🔥 mỗi giây bit chính nhấp nháy
-        tickMainBit();
-
-        if (timeLeft <= 0) {
-            clearInterval(countdownInterval);
-            countdownInterval = null;
-
-            currentIndex = (currentIndex + 1) % binarySequence.length;
-            displayCurrentBinary();
-
-            resetHourglass();
-        }
-    }, 1000);
+/* ===== HIỂN THỊ BIT HIỆN TẠI ===== */
+function showBit() {
+    binaryDisplay.textContent = binarySequence[index];
+    binaryDisplay.classList.remove("tick");
+    void binaryDisplay.offsetWidth;
+    binaryDisplay.classList.add("tick");
+    renderSequence();
 }
 
+/* ===== START ===== */
+function start() {
+    if (timer) return;
+    status.textContent = "Đang chạy...";
+    showBit();
 
-        
-        function resetHourglass() {
-    hourglass.classList.add('flipping');
-
-    setTimeout(() => {
-        sandTop.classList.remove('flowing');
-        sandBottom.classList.remove('flowing');
-
-        setTimeout(() => {
-            hourglass.classList.remove('flipping');
-            startHourglass();
-        }, 100);
-    }, 600);
+    timer = setInterval(() => {
+        index = (index + 1) % binarySequence.length;
+        showBit();
+    }, intervalSeconds * 1000);
 }
-        
-        function resetHourglassVisual() {
-            sandTop.classList.remove('flowing');
-            sandBottom.classList.remove('flowing');
-            hourglass.classList.remove('flipping');
-        }
-        
-        function updateSequenceInfo() {
-            const nextIndex = (currentIndex + 1) % binarySequence.length;
-            sequenceInfo.textContent = `Hiện tại: ${currentIndex + 1}/${binarySequence.length} | Tiếp theo: ${binarySequence[nextIndex]} | Dãy: ${binarySequence.join(' ')}`;
-        }
-        
-        // Khởi tạo hiển thị dãy khi tải trang
-        window.onload = function() {
-            updateSequenceDisplay();
-            // Thiết lập class ban đầu cho cát
-            sandTop.className = 'sand sand-top';
-            sandBottom.className = 'sand sand-bottom';
-        };
-    </script>
+
+/* ===== STOP ===== */
+function stop() {
+    clearInterval(timer);
+    timer = null;
+    status.textContent = "Đã dừng";
+}
+
+/* ===== RESET ===== */
+function reset() {
+    stop();
+    index = 0;
+    binaryDisplay.textContent = "-";
+    status.textContent = "Đã reset";
+    renderSequence();
+}
+
+/* ===== EVENTS ===== */
+startBtn.onclick = () => timer ? stop() : start();
+resetBtn.onclick = reset;
+
+/* ===== INIT ===== */
+renderSequence();
+</script>
 </body>
 </html>
-
-
-
-
-
 
