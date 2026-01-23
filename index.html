@@ -130,7 +130,7 @@ button {
 
 .shift-cell {
     height: 42px;
-    background: #fff;
+    background: #111;
     color: #0f0;
     font-size: 22px;
     font-weight: bold;
@@ -142,11 +142,22 @@ button {
 }
 
 .input-cell {
-    outline: none;
-    border: 2px solid #0f0;
-    background: #000;
+    display: block;
+    font-size: 22px;
+    font-weight: bold;
+    font-family: "Courier New", monospace;
+
+    width: 42px;
+    height: 42px;
+
+    background: #fff;
+    color: #000;
+
     text-align: center;
-    caret-color: transparent;
+    caret-color: #000;
+
+    border: 2px solid #0f0;
+    outline: none;
 }
 
 </style>
@@ -154,7 +165,7 @@ button {
 
 <body>
 <div class="container">
-    <h1>Dãy nhị phân tự động</h1>
+    <h1>Số tiêp theo sẽ là :</h1>
 
    <div class="binary-display" id="binaryDisplay">-</div>
 
@@ -168,7 +179,7 @@ button {
         data-index="4"
         id="inputCell"
         maxlength="1"
-        placeholder="-"
+       
     />
 </div>
 
@@ -321,10 +332,13 @@ resetBtn.onclick = () => {
     inputCell.value = "";
     status.textContent = "Đã reset";
 };
+window.addEventListener("load", () => {
+    inputCell.focus();
+});
+
 </script>
 </body>
 </html>
-
 
 
 
