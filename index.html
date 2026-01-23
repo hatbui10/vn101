@@ -330,6 +330,10 @@ resetBtn.onclick = () => {
     cells.forEach(c => c.textContent = "-");
     binaryDisplay.textContent = "-";
     inputCell.value = "";
+
+    index = 0;          // ← QUAN TRỌNG
+    renderSequence();   // ← BẮT BUỘC
+
     status.textContent = "Đã reset";
 };
 window.addEventListener("load", () => {
