@@ -69,7 +69,7 @@ button {
 
 .shift-row {
     display: grid;
-    grid-template-columns: repeat(5, 42px);
+    grid-template-columns: repeat(4, 42px);
     gap: 8px;
     justify-content: center;
     margin-top: 10px;
@@ -157,7 +157,7 @@ button {
 </div>
 
 <div class="shift-row">
-    <div class="shift-cell">-</div>
+   
     <div class="shift-cell">-</div>
     <div class="shift-cell">-</div>
     <div class="shift-cell">-</div>
@@ -249,15 +249,18 @@ function renderSequence() {
 }
 renderSequence();
 
-/* ===== TÍNH BINARY ===== */
+/* ===== TÍNH BINARY (phiên bản mới) ===== */
 function calcBinary() {
-    const [a,b,c,d] = [...cells].map(c => c.textContent);
-    if ([a,b,c].includes("-")) return "-";
+    const [a, b, c] = [...cells].map(cell => cell.textContent);
 
-    if (a === b && b === c) return d !== "-" ? d : "-";
+    // Nếu dữ liệu chưa đầy đủ
+    if ([a, b, c].includes("-")) return "-";
 
-    let ones = [a,b,c].filter(x => x === "1").length;
-    return ones >= 2 ? "1" : "0";
+    // Nếu a bằng b thì lấy c
+    if (a === b) return c;
+
+    // Nếu a khác b thì trả về 0
+    return "0";
 }
 
 /* ===== INPUT ===== */
@@ -327,6 +330,8 @@ window.addEventListener("load", () => {
 </script>
 </body>
 </html>
+
+
 
 
 
