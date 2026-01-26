@@ -47,6 +47,16 @@ h1 { color: #fff; }
     color: #fff;
 }
 
+.binary-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.binary-label {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
 button {
     padding: 12px 26px;
     font-size: 16px;
@@ -66,7 +76,6 @@ button {
     margin-left: 10px;
 }
 
-
 .shift-row {
     display: grid;
     grid-template-columns: repeat(4, 42px);
@@ -78,7 +87,7 @@ button {
 .shift-cell {
     height: 42px;
     background: yellow;
-    color: #fff;
+    color: #ccc;
     font-size: 22px;
     font-weight: bold;
     display: flex;
@@ -92,20 +101,15 @@ button {
     font-size: 22px;
     font-weight: bold;
     font-family: "Courier New", monospace;
-
     width: 42px;
     height: 42px;
-
     background: #D6D85D;
     color: #5C2FC2;
-
     text-align: center;
     caret-color: #000;
-
     border: 2px solid #0f0;
     outline: none;
 }
-
 
 .sequence-display {
     margin-top: 25px;
@@ -117,19 +121,18 @@ button {
     max-height: 300px;
     overflow-y: auto;
 }
-/* ô đứng im màu đỏ nền trắng*/
+
 .sequence-bit {
     width: 26px;
     height: 26px;
     line-height: 26px;
     text-align: center;
     background: red;
-     color: #fff; 
-    
-     font-weight: 900;   /* hoặc 800, 700 */
+    color: #fff; 
+    font-weight: 900;
     border-radius: 4px;
 }
-/* ô đứng im màu dỏ nền vàng*/
+
 .sequence-bit.current {
     background: #3120E0;
     color: #000000;
@@ -151,27 +154,30 @@ button {
 
 <body>
 <div class="container">
-<h1>Bit 0 lucky @-@ là :</h1>
+<h1>Bit 1 lucky @-@ là :</h1>
 
 <div class="binary-row">
-    <div class="binary-display" id="binaryPrev">-</div>
-    <div class="binary-display" id="binaryNow">-</div>
+    <div class="binary-col">
+        <span class="binary-label">A</span>
+        <div class="binary-display" id="binaryPrev">-</div>
+    </div>
+    <div class="binary-col">
+        <span class="binary-label">B</span>
+        <div class="binary-display" id="binaryNow">-</div>
+    </div>
 </div>
 
 <div class="shift-row">
-   
     <div class="shift-cell">-</div>
     <div class="shift-cell">-</div>
     <div class="shift-cell">-</div>
     <input class="shift-cell input-cell" id="inputCell" maxlength="1">
 </div>
- <div class="controls">
-        <button id="startBtn">Bắt đầu</button>
-        <button id="resetBtn">Reset</button>
-    </div>
 
-   
-
+<div class="controls">
+    <button id="startBtn">Bắt đầu</button>
+    <button id="resetBtn">Reset</button>
+</div>
 
 <div class="status" id="status">READY</div>
 
@@ -216,34 +222,37 @@ button {
 00010100011010110101101000000010111010001110111010101100101111010010010101101001001100110111000001111100000000010001110011011011100011100001110111110010000110111001010101111111000001011111001010111010000110101101001111111011100010000100100110111110010101000111011000001110001100010110110001110000100101100100111001000011011100111101011010101110100101111101111111100010111011111011111011100011101010001100100000011110101001011100101000101100101110011011100100101000110001011101101010110001001111101010
 00001000110111100111000011101001011100111100111110101011101011010011001111111110110000000110111101010001011010100100100000110100100101100001111001000110101111011000001101000010001111111000010101101000010101001110011111001100010110001101011001101011000110001000000011101111011111110000100001010011111100001101101111100000110100000001010001110110010000101001111000101110010000000110001101101010000110010111111111101001000111011001011111001111100001000100010101011010110110011110011001100110010010011000
 1110110100110011111111111101101001101110000001010011111011001111011100110011100111101100101101111000100001110111011011011111111111100000101100111010111111100001101110110001010011000000100101001000111011101000010011111110110001011011010101101001011010010001011001010110011100100011000010111111111001010101101110010110000100110110100101110001011100100010001000001001111101101001110001110111011011101000111101101111011011110001011110100001110011111111110111101010100001010101010101100100001110    </div>
-</div>
-
+</div></div>
 
 <script>
-/* ===== LẤY SEQUENCE ===== */
+/* ===== LẤY ELEMENT ===== */
 const sequenceDisplay = document.getElementById("sequenceDisplay");
 const binaryPrevEl    = document.getElementById("binaryPrev");
 const binaryNowEl     = document.getElementById("binaryNow");
 const inputCell       = document.getElementById("inputCell");
 const cells           = document.querySelectorAll(".shift-cell:not(.input-cell)");
 
-const binarySequence = sequenceDisplay.textContent.trim().replace(/\s+/g, "").split("");
+/* ===== SEQUENCE ===== */
+const binarySequence = sequenceDisplay.textContent
+    .trim()
+    .replace(/\s+/g, "")
+    .split("");
 
-let seqIndex = 0;
-
-/* ===== TRẠNG THÁI LƯU ===== */
-let savedState = null;
-// { index, seqBit, binary }
+/* ===== CON TRỎ SEQUENCE (CHẠY THEO INPUT) ===== */
+let currentSeqIndex = 0;
 
 /* ===== FLAG TÔ MÀU ===== */
 let mismatch = new Array(binarySequence.length).fill(false);
+
+/* ===== LỊCH SỬ GIÁ TRỊ A ===== */
+let aHistory = [];
 
 /* ===== RENDER SEQUENCE ===== */
 function renderSequence() {
     let html = "";
     binarySequence.forEach((bit, i) => {
         let cls = "sequence-bit";
-        if (i === seqIndex) cls += " current";
+        if (i === currentSeqIndex) cls += " current";
         if (mismatch[i]) cls += " mismatch";
         html += `<span class="${cls}">${bit}</span>`;
     });
@@ -251,23 +260,50 @@ function renderSequence() {
 }
 renderSequence();
 
-/* ===== TÍNH BINARY (phiên bản mới) ===== */
+/* ===== TÍNH A ===== */
 function calcBinary() {
     const [a, b, c] = [...cells].map(cell => cell.textContent);
-
-    // Nếu dữ liệu chưa đầy đủ
     if ([a, b, c].includes("-")) return "-";
-
-    // Nếu a bằng b thì lấy c
     if (a === b) return c;
-
-    // Nếu a khác b thì trả về 0
     return "0";
+}
+
+/* ===== TRẠNG THÁI SO SÁNH ===== */
+let aCount = 0;          // số lần A hợp lệ
+let compareStarted = false;
+const startCompareAtSeq = 5; // khi sequence tới ô 5
+const firstCompareIndex = 4; // so với sequence[4]
+
+/* ===== SO SÁNH VÀ TÔ MÀU KHI SEQUENCE Ở Ô5 VÀ A CÓ GIÁ TRỊ ===== */
+function compareAndHighlight() {
+    // Chỉ so sánh khi đã có đủ điều kiện
+    if (currentSeqIndex >= startCompareAtSeq && binaryNowEl.textContent !== "-") {
+        const A_value = binaryNowEl.textContent; // Giá trị A hiện tại
+        
+        // Lưu giá trị A vào lịch sử
+        aHistory.push(A_value);
+        
+        // So sánh A1 với sequence 4
+        if (binarySequence[firstCompareIndex] !== A_value) {
+            mismatch[firstCompareIndex] = true;
+        }
+        
+        // So sánh các giá trị A trước đó với các sequence tương ứng
+        for (let i = 0; i < aHistory.length - 1; i++) {
+            const seqIndex = firstCompareIndex + i + 1;
+            if (seqIndex < binarySequence.length) {
+                if (binarySequence[seqIndex] !== aHistory[i]) {
+                    mismatch[seqIndex] = true;
+                }
+            }
+        }
+    }
 }
 
 /* ===== INPUT ===== */
 inputCell.addEventListener("input", () => {
     const v = inputCell.value;
+
     if (!/^[01]$/.test(v)) {
         inputCell.value = "";
         return;
@@ -280,32 +316,20 @@ inputCell.addEventListener("input", () => {
     cells[cells.length - 1].textContent = v;
     inputCell.value = "";
 
-    /* ===== TÍNH KẾT QUẢ ===== */
-    const result = calcBinary();
-
-    /* ===== BƯỚC 1: KIỂM TRA TRẠNG THÁI CŨ ===== */
-    if (savedState) {
-        const { index, seqBit, binary } = savedState;
-        if (binary !== "-" && seqBit !== binary) {
-            mismatch[index] = true;
-        }
+    /* ===== SEQUENCE NHẢY THEO INPUT ===== */
+    if (currentSeqIndex < binarySequence.length - 1) {
+        currentSeqIndex++;
     }
 
-    /* ===== BƯỚC 2: HIỂN THỊ ===== */
+    /* ===== TÍNH A ===== */
+    const result = calcBinary();
+
+    /* ===== HIỂN THỊ A / B ===== */
     binaryPrevEl.textContent = binaryNowEl.textContent;
     binaryNowEl.textContent  = result;
 
-    /* ===== BƯỚC 3: LƯU TRẠNG THÁI MỚI ===== */
-    savedState = {
-        index: seqIndex,
-        seqBit: binarySequence[seqIndex],
-        binary: result
-    };
-
-    /* ===== BƯỚC 4: NHẢY SEQUENCE ===== */
-    if (seqIndex < binarySequence.length - 1) {
-        seqIndex++;
-    }
+    /* ===== SO SÁNH VÀ TÔ MÀU ===== */
+    compareAndHighlight();
 
     renderSequence();
     inputCell.focus();
@@ -318,45 +342,19 @@ document.getElementById("resetBtn").onclick = () => {
     binaryPrevEl.textContent = "-";
     binaryNowEl.textContent  = "-";
 
-    seqIndex = 0;
-    savedState = null;
+    currentSeqIndex = 0;
+    aCount = 0;
+    compareStarted = false;
     mismatch.fill(false);
+    aHistory = [];
 
     renderSequence();
     inputCell.focus();
 };
-window.addEventListener("load", () => {
-    inputCell.focus();
-});
 
+window.addEventListener("load", () => inputCell.focus());
 </script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
